@@ -13,7 +13,19 @@
         <h1>📚 API de Livros</h1>
         <p>Bem-vindo à sua API REST</p>
         <a href="/api/books">Ver livros</a>
+        <a href="bookRegister.html">Cadastrar livro</a>
+
+        <div class="book-list">
+            <h2>Livros Cadastrados</h2>
+            <ul id="bookList"></ul>
+        </div>
     </div>
+
+    <script type="module">
+        import { updateBooks } from './js/bookUtils.js';
+        updateBooks('bookList');
+    </script>
+    
 </body>
 
 </html>

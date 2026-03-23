@@ -1,15 +1,11 @@
 import { Router } from 'express';
-import books from '../mock/books.js';
-
+import { getBooks, registerBook } from '../controllers/bookController.js';
 const router = Router();
 
 // Rota para obter todos os livros
-router.get('/books', (req, res) => {
-    res.status(200).json({
-        sucess: true,
-        message: 'Lista de livros' ,
-        data: books
-    });
-});
+router.get('/books', getBooks) ;
+
+// Rota para cadastrar um novo livro
+router.post('/books', registerBook);
 
 export default router;
