@@ -1,4 +1,4 @@
-Name: pull request test Node.js CI
+name: pull request test Node.js CI
 on:
   pull_request:
     branches: [main]
