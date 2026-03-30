@@ -13,3 +13,8 @@ jobs:
         node-version: '>=21'
     - name: instalando dependências
       run: npm install
+    - name: Executando a aplicação
+      run: |
+        node index.js &
+        sleep 5
+        kill $!
