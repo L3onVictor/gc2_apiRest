@@ -45,10 +45,20 @@ O servidor será executado na porta 3030. Acesse `http://localhost:3030` para ve
 
 ## Endpoints da API
 
-### GET /api/books
-
+#### GET /api/books
 Retorna uma lista de todos os livros cadastrados.
+
+---
+
+#### POST /api/books
+Permite o cadastro de livros.
+
+# Workflow escolhido
+
+> - **Gitlab Flow:**
+>
+>   - Optei pelo *GitLab Flow* por ser simples de integrar e adequado para projetos pequenos, como este. Ele não exige versões prévias ou atualizações frequentes, diferentemente do *Git Flow*, nem depende exclusivamente de pull requests como o GitHub Flow. Por essas características, o *GitLab Flow* é a estratégia mais adequada para este projeto.
 
 ## Licença
 
-Este projeto está sob a licença ISC.
+Este projeto está sob a licença Apache License.
