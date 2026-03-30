@@ -1,7 +1,6 @@
 name: push test Node.js CI
 on:
   push:
-    branches: [main]
 jobs:
   build:
     runs-on: ubuntu-latest
