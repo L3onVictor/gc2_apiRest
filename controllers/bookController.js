@@ -13,33 +13,43 @@ export const getBooks = async (req, res) => {
 
 
 export const registerBook = async (req, res) => {
-    const { title, author } = req.body;
-    if (!title || !author) {
-        return res.status(400).json({ error: 'Title and author are required' });
+    try {
+        const { title, author } = req.body;
+        if (!title || !author) {
+            return res.status(400).json({ error: 'Title and author are required' });
+        }
+
+        const db = await initializeDb();
+        const result = await db.run(
+            'INSERT INTO books (title, author) VALUES (?, ?)',
+            [title, author]
+        );
+
+        const newBook = {
+            id: result.lastID,
+            title,
+            author
+        };
+
+        res.status(201).json({ message: 'Book created successfully', book: newBook });
+    } catch (error) {
+        console.error("Error creating book:", error);
+        res.status(500).json({ error: "Erro interno do servidor" });
     }
-
-    const db = await initializeDb();
-    const result = await db.run(
-        'INSERT INTO books (title, author) VALUES (?, ?)',
-        [title, author]
-    );
-
-    const newBook = {
-        id: result.lastID,
-        title,
-        author
-    };
-
-    res.status(201).json({ message: 'Book created successfully' });
 };
 
 export const deleteBook = async (req, res) => {
-    const { id } = req.params;
+    try {
+        const { id } = req.params;
 
-    const db = await initializeDb();
-    const result = await db.run('DELETE FROM books WHERE id = ?', [id]);
-    if (result.changes === 0) {
-        return res.status(404).json({ error: 'Book not found' });
+        const db = await initializeDb();
+        const result = await db.run('DELETE FROM books WHERE id = ?', [id]);
+        if (result.changes === 0) {
+            return res.status(404).json({ error: 'Book not found' });
+        }
+        res.status(204).send();
+    } catch (error) {
+        console.error("Error deleting book:", error);
+        res.status(500).json({ error: "Erro interno do servidor" });
     }
-    res.status(204);
 }
