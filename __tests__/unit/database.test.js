@@ -1,16 +1,6 @@
-/**
- * Testes unitários: database/database.js
- *
- * Mockamos o módulo 'sqlite' para que `open()` retorne um objeto de banco
- * de dados falso — sem abrir nenhum arquivo .db real em disco.
- *
- * Nota: `database.js` chama startDb() no nível do módulo (linha 34).
- * O mock de 'sqlite' impede que essa chamada cause efeitos colaterais.
- */
-
 import { jest } from '@jest/globals';
 
-// ─── Mock do sqlite (wrapper assíncrono) ────────────────────────────────────
+// ─── Mock do sqlite  ────────────────────────────────────
 const mockDb = {
     exec: jest.fn().mockResolvedValue(undefined),
 };
@@ -19,7 +9,6 @@ jest.unstable_mockModule('sqlite', () => ({
     open: jest.fn().mockResolvedValue(mockDb),
 }));
 
-// Importações dinâmicas APÓS declarar o mock
 const { open } = await import('sqlite');
 const { initializeDb, createBookTable, startDb } = await import('../../database/database.js');
 
@@ -28,9 +17,6 @@ beforeEach(() => {
     mockDb.exec.mockResolvedValue(undefined);
 });
 
-// ============================================================================
-// initializeDb
-// ============================================================================
 describe('initializeDb', () => {
     it('chama open com o filename correto e retorna o db', async () => {
         const db = await initializeDb();
@@ -42,9 +28,7 @@ describe('initializeDb', () => {
     });
 });
 
-// ============================================================================
 // createBookTable
-// ============================================================================
 describe('createBookTable', () => {
     it('executa CREATE TABLE IF NOT EXISTS books', async () => {
         await createBookTable(mockDb);
@@ -64,9 +48,7 @@ describe('createBookTable', () => {
     });
 });
 
-// ============================================================================
 // startDb
-// ============================================================================
 describe('startDb', () => {
     it('inicializa o banco e cria a tabela com sucesso, retornando o db', async () => {
         const db = await startDb();

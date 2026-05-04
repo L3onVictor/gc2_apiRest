@@ -10,9 +10,10 @@ jobs:
     - name: versão do node
       uses: actions/setup-node@v6
       with:
-        node-version: '>=21'
+        node-version: 20
+        cache: 'npm'
     - name: instalando dependências
-      run: npm install
+      run: npm ci
     - name: Executando a aplicação
       run: |
         node index.js &

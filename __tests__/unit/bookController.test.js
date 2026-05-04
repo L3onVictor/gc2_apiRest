@@ -1,20 +1,5 @@
-/**
- * Testes unitários: controllers/bookController.js
- *
- * Com ESM ("type":"module"), usamos jest.unstable_mockModule() antes dos
- * imports dinâmicos — essa é a API oficial do Jest para mockar módulos ESM.
- *
- * Estratégia:
- *  - Mockamos database/database.js para que initializeDb() retorne um objeto
- *    de banco de dados falso (mockDb), sem tocar em nenhum arquivo .db real.
- *  - Criamos um helper makeRes() que imita o objeto `res` do Express,
- *    eliminando a necessidade de supertest ou de subir um servidor HTTP.
- */
-
 import { jest } from '@jest/globals';
 
-// ─── 1. Configurar o mock do banco ANTES de importar o controller ────────────
-// jest.unstable_mockModule é obrigatório em projetos ESM nativos.
 const mockDb = {
     all: jest.fn(),
     run: jest.fn(),
@@ -24,27 +9,22 @@ jest.unstable_mockModule('../../database/database.js', () => ({
     initializeDb: jest.fn().mockResolvedValue(mockDb),
 }));
 
-// ─── 2. Importar os módulos DEPOIS de declarar os mocks (import dinâmico) ───
 const { initializeDb } = await import('../../database/database.js');
 const { getBooks, registerBook, deleteBook } = await import('../../controllers/bookController.js');
 
-// ─── 3. Garantir que initializeDb sempre retorna mockDb em cada teste ────────
 beforeEach(() => {
     initializeDb.mockResolvedValue(mockDb);
 });
 
-// ─── Helper: imita res do Express sem precisar do Express ────────────────────
 function makeRes() {
     const res = {};
-    res.status = jest.fn().mockReturnValue(res); // encadeamento: res.status(400).json(...)
-    res.json   = jest.fn().mockReturnValue(res);
-    res.send   = jest.fn().mockReturnValue(res);
+    res.status = jest.fn().mockReturnValue(res);
+    res.json = jest.fn().mockReturnValue(res);
+    res.send = jest.fn().mockReturnValue(res);
     return res;
 }
 
-// ============================================================================
 // getBooks
-// ============================================================================
 describe('getBooks', () => {
     it('retorna 200 com lista de livros quando DB responde com sucesso', async () => {
         const fakeBooks = [
@@ -76,9 +56,7 @@ describe('getBooks', () => {
     });
 });
 
-// ============================================================================
 // registerBook
-// ============================================================================
 describe('registerBook', () => {
     it('cria livro e retorna 201 com os dados salvos', async () => {
         mockDb.run.mockResolvedValue({ lastID: 7 });
@@ -142,9 +120,7 @@ describe('registerBook', () => {
     });
 });
 
-// ============================================================================
 // deleteBook
-// ============================================================================
 describe('deleteBook', () => {
     it('deleta o livro e retorna 204 sem corpo', async () => {
         mockDb.run.mockResolvedValue({ changes: 1 });
