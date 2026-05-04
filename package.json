@@ -7,8 +7,8 @@
     "test": "jest",
     "start": "nodemon index.js",
     "db": "node database/database.js",
-    "lint": "eslint",
-    "lint:fix": "eslint --fix"
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "repository": {
     "type": "git",
