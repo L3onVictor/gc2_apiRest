@@ -20,10 +20,4 @@ form.addEventListener('submit', async (e) => {
         const data = await res.json();
         alert(`Erro: ${data.error}`);
     }
-
-    form.reset();
-    updateBooks();
 });
-
-// Carrega lista inicial
-updateBooks();
