@@ -1,13 +1,7 @@
 import { initializeDb } from "./database.js";
 
 const db = await initializeDb();
-const a = 2;
-const b = 7
 
-function teste(params) {
-    const result = params + 2
-    console.log(result)
-}
 const books = [
     {
         title: "A arte da guerra",

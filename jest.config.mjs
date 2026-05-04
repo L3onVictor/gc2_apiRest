@@ -34,6 +34,8 @@ const config = {
   // Indicates which provider should be used to instrument code for coverage
   coverageProvider: "v8",
 
+  testEnvironment: "node",
+
   coverageThreshold: {
     global: {
       branches: 90,
@@ -48,7 +50,6 @@ const config = {
     "routes/**/*.js"
   ],
 
-  testEnvironment: "node",
   // A list of reporter names that Jest uses when writing coverage reports
   // coverageReporters: [
   //   "json",
