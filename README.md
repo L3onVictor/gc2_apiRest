@@ -1,5 +1,20 @@
 # GC2 API Rest
 
+![Docker Build](https://img.shields.io/github/actions/workflow/status/L3onVictor/gs2_apiRest/build-image.yaml?label=Docker%20CI)
+![Docker Pulls](https://img.shields.io/docker/pulls/oliveiraleon/gc2-repository)
+![License](https://img.shields.io/github/license/L3onVictor/gs2_apiRest)
+
+## Docker Hub
+
+A imagem Docker da aplicação está disponível no Docker Hub:
+
+[Docker Hub Repository](https://hub.docker.com/r/oliveiraleon/gc2-repository)
+
+### Pull da imagem
+
+```bash
+docker pull oliveiraleon/gc2-repository:latest
+
 ## Descrição
 
 Este projeto é uma API REST simples para gerenciamento de livros, desenvolvida como atividade de Gestão de Configuração 2. A API permite listar livros cadastrados e inclui uma interface web básica para visualização.
