@@ -4,15 +4,26 @@ on:
     branches:
     - main
     - 'infra/**'
-    
-  pull_request:
-    branches: [ main ]
+
 jobs:
-  build:
+  build-and-publish:
+
     runs-on: ubuntu-latest
     steps:
     - name: Check out the repository
       uses: actions/checkout@v6
-    - name: Build Docker image
-      run: |
-        docker build -t gc2-api-image .
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v4
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_TOKEN }}
+
+    - name: Build, Tag and push Docker image
+      uses: docker/build-push-action@v7
+      with:
+        context: .
+        push: true
+        tags: |
+          oliveiraleon/gc2-api-image:latest
+          oliveiraleon/gc2-api-image:${{ github.sha }}
+     
