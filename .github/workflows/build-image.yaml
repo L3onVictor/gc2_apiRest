@@ -24,6 +24,6 @@ jobs:
         context: .
         push: true
         tags: |
-          oliveiraleon/gc2-repository:latest
           oliveiraleon/gc2-repository:${{ github.sha }}
+          oliveiraleon/gc2-repository:latest
      
