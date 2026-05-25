@@ -84,13 +84,9 @@ A infraestrutura é composta por duas VMs:
 - [Vagrant](https://www.vagrantup.com/)
 ### Subindo a infraestrutura
  
-1. Clone o repositório e entre no diretório:
-   ```bash
-   git clone https://github.com/L3onVictor/gs2_apiRest.git
-   cd gs2_apiRest
-   ```
- 
-2. Suba as VMs:
+ Com o repositório clonado e na raiz no projeto:
+
+1. Suba as VMs:
    ```bash
    vagrant up
    ```
@@ -125,7 +121,7 @@ O provisionamento irá automaticamente instalar o Node.js e as dependências da 
 > ```
  
 
-3. Acesse a vm2 e inicie o servidor:
+2. Acesse a vm2 e inicie o servidor:
    ```bash
    vagrant ssh vm2
    cd /vagrant_data
