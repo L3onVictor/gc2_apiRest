@@ -14,6 +14,7 @@ A imagem Docker da aplicação está disponível no Docker Hub:
 
 ```bash
 docker pull oliveiraleon/gc2-repository:latest
+```
 
 ## Descrição
 
@@ -23,7 +24,6 @@ Este projeto é uma API REST simples para gerenciamento de livros, desenvolvida 
 
 - Listar todos os livros via endpoint GET `/api/books`
 - Interface web simples para acessar a API
-- Dados mockados para demonstração
 
 ## Tecnologias Utilizadas
 
@@ -67,6 +67,104 @@ Retorna uma lista de todos os livros cadastrados.
 
 #### POST /api/books
 Permite o cadastro de livros.
+
+
+## Infraestrutura com Vagrant
+ 
+A infraestrutura é composta por duas VMs:
+ 
+| VM | IP | Função |
+|---|---|---|
+| vm1 | 192.168.22.3 | Cliente — realiza requisições para a vm2 |
+| vm2 | 192.168.22.4 | Servidor — executa a API REST |
+ 
+### Pré-requisitos
+ 
+- [VirtualBox](https://www.virtualbox.org/)
+- [Vagrant](https://www.vagrantup.com/)
+### Subindo a infraestrutura
+ 
+1. Clone o repositório e entre no diretório:
+   ```bash
+   git clone https://github.com/L3onVictor/gs2_apiRest.git
+   cd gs2_apiRest
+   ```
+ 
+2. Suba as VMs:
+   ```bash
+   vagrant up
+   ```
+
+O provisionamento irá automaticamente instalar o Node.js e as dependências da aplicação na vm2.
+
+> [!IMPORTANT]
+> Se durante o `vagrant up` ocorrer o erro de boot timeout em uma das VMs, execute apenas para a VM com problema:
+>
+> ```bash
+> # Caso seja a primeira vm pode executar:
+>
+> vagrant destroy -f
+>
+> # Caso seja outra, execute:
+>
+> vagrant destroy -f <nome_da_vm>
+>
+> # Depois de destruir, execute:
+> 
+> vagrant up
+> ```
+>
+> Se durante o provisionamento ocorrer o erro abaixo:
+> ```
+> timeout during server version negotiating
+> ```
+> Desative o OpenSSH Authentication Agent do Windows e tente novamente:
+> ```bash
+> vagrant destroy -f <nome_da_vm>
+> vagrant up
+> ```
+ 
+
+3. Acesse a vm2 e inicie o servidor:
+   ```bash
+   vagrant ssh vm2
+   cd /vagrant_data
+   npm start
+   ```
+ 
+### Testando a rota GET a partir da vm1
+ 
+Com o servidor rodando na vm2, abra um novo terminal e acesse a vm1:
+ 
+```bash
+vagrant ssh vm1
+```
+ 
+Dentro da vm1, faça a requisição para a API:
+ 
+```bash
+curl http://192.168.22.4:3030/api/books
+```
+ 
+A resposta esperada é:
+ 
+```json
+{"books":[{"id":1,"title":"A arte da guerra","author":"Sun Tzu"},{"id":2,"title":"Clean Code","author":"Robert C. Martin"}]}
+```
+ 
+### Encerrando as VMs
+ 
+```bash
+vagrant halt
+```
+ 
+Para destruir e recriar do zero:
+ 
+```bash
+vagrant destroy -f
+vagrant up
+```
+ 
 
 # Workflow escolhido
 
