@@ -148,6 +148,31 @@ A resposta esperada é:
 {"books":[{"id":1,"title":"A arte da guerra","author":"Sun Tzu"},{"id":2,"title":"Clean Code","author":"Robert C. Martin"}]}
 ```
  
+## Provisionamento com o Ansible
+```sh
+# 1. Sobe as VMs
+vagrant up
+
+# 2. Acessa a vm1
+vagrant ssh vm1
+
+# 3. Copia a chave SSH para a vm2
+ssh-keygen -t ed25519 # Defina uma senha e escolha o arquivo padão
+
+ssh-copy-id -i /home/vagrant/.ssh/id_ed25519.pub vagrant@192.168.22.4
+# Após o -i coloque o caminho para a sua chave ssh pública e o ip da sua segunda vm
+# senha: vagrant
+
+# 4. Entra na pasta do ansible
+cd /vagrant/ansible
+
+# 5. Executa o playbook
+ansible-playbook -i inventory.ini configura-node.yaml
+
+# 6. Testa
+curl http://192.168.22.4:3030/api/books 
+```
+
 ### Encerrando as VMs
  
 ```bash
