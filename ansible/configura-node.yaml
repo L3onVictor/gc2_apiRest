@@ -1,0 +1,39 @@
+- name: Configurar a aplicação gc2_apiRest na vm2
+  hosts: server
+  become: yes
+
+  tasks:
+    - name: Instalar dependências do sistema (curl, git)
+      apt:
+        name:
+          - curl
+          - git
+        state: present
+        update_cache: yes
+
+    - name: Adicionar repositório oficial do Node.js 22
+      shell: |
+        curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
+      args:
+        creates: /etc/apt/sources.list.d/nodesource.list
+
+    - name: Instalar Node.js
+      apt:
+        name: nodejs
+        state: present
+
+    - name: Clonar o repositório da aplicação
+      git:
+        repo: https://github.com/L3onVictor/gc2_apiRest.git
+        dest: /home/vagrant/gc2_apiRest
+        version: main
+        force: yes
+
+    - name: Instalar dependências Node (npm install)
+      npm:
+        path: /home/vagrant/gc2_apiRest
+
+    - name: Iniciar a aplicação em background
+      shell: nohup node index.js > /home/vagrant/gc2_apiRest/app.log 2>&1 &
+      args:
+        chdir: /home/vagrant/gc2_apiRest
