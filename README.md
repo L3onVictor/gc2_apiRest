@@ -128,7 +128,9 @@ O provisionamento irá automaticamente instalar o Node.js e as dependências da 
 2. Acesse a vm2 e inicie o servidor:
    ```bash
    vagrant ssh vm2
-   cd /vagrant_data
+   
+   cd /gc2_apiRest
+   
    npm start
    ```
  
