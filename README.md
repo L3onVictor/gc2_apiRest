@@ -72,6 +72,8 @@ Permite o cadastro de livros.
 ## Infraestrutura com Vagrant
  
 A infraestrutura é composta por duas VMs:
+
+Para saber mais sobre monitoramento, acesse [tutorial Netdata](./vagrant/README.md)
  
 | VM | IP | Função |
 |---|---|---|
@@ -84,10 +86,12 @@ A infraestrutura é composta por duas VMs:
 - [Vagrant](https://www.vagrantup.com/)
 ### Subindo a infraestrutura
  
- Com o repositório clonado e na raiz no projeto:
+ Com o repositório clonado e no arquivo ```vagrant/```:
 
 1. Suba as VMs:
    ```bash
+   cd vagrant/ # Caso já esteja nesse diretório, ignore.
+
    vagrant up
    ```
 
@@ -124,7 +128,9 @@ O provisionamento irá automaticamente instalar o Node.js e as dependências da 
 2. Acesse a vm2 e inicie o servidor:
    ```bash
    vagrant ssh vm2
-   cd /vagrant_data
+   
+   cd /gc2_apiRest
+   
    npm start
    ```
  
@@ -150,6 +156,9 @@ A resposta esperada é:
  
 ## Provisionamento com o Ansible
 ```sh
+# Caso já esteja na pasta onde está o vagrantfile, ignore, caso não:
+cd vagrant/
+
 # 1. Sobe as VMs
 vagrant up
 

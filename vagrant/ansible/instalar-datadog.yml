@@ -1,0 +1,44 @@
+---
+- name: Instalar Datadog Agent
+  hosts: server:master
+  become: yes
+
+  vars:
+    dd_api_key: "{{ lookup('env', 'DD_API_KEY') }}"
+    dd_site: "us5.datadoghq.com"
+
+  tasks:
+    - name: Instalar dependências
+      apt:
+        name:
+          - curl
+        state: present
+        update_cache: yes
+
+    - name: Instalar Datadog Agent
+      shell: |
+        DD_API_KEY={{ dd_api_key }} DD_SITE="{{ dd_site }}" bash -c \
+        "$(curl -L https://install.datadoghq.com/scripts/install_script_agent7.sh)"
+      args:
+        executable: /bin/bash
+        creates: /etc/datadog-agent/datadog.yaml
+
+    - name: Configurar hostname
+      lineinfile:
+        path: /etc/datadog-agent/datadog.yaml
+        regexp: "^#?\\s*hostname:"
+        line: "hostname: {{ inventory_hostname }}"
+
+    - name: Configurar tags
+      blockinfile:
+        path: /etc/datadog-agent/datadog.yaml
+        marker: "# {mark} ANSIBLE MANAGED TAGS"
+        block: |
+          tags:
+            - env:apresentacao
+
+    - name: Garantir que o Agent está rodando
+      service:
+        name: datadog-agent
+        state: started
+        enabled: yes
