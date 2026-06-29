@@ -72,6 +72,8 @@ Permite o cadastro de livros.
 ## Infraestrutura com Vagrant
  
 A infraestrutura é composta por duas VMs:
+
+Para saber mais sobre monitoramento, acesse [tutorial Netdata](./vagrant/README.md)
  
 | VM | IP | Função |
 |---|---|---|
@@ -84,10 +86,12 @@ A infraestrutura é composta por duas VMs:
 - [Vagrant](https://www.vagrantup.com/)
 ### Subindo a infraestrutura
  
- Com o repositório clonado e na raiz no projeto:
+ Com o repositório clonado e no arquivo ```vagrant/```:
 
 1. Suba as VMs:
    ```bash
+   cd vagrant/ # Caso já esteja nesse diretório, ignore.
+
    vagrant up
    ```
 

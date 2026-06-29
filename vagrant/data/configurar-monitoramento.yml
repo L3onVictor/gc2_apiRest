@@ -1,44 +1,60 @@
 - name: Configurar monitoramento
   hosts: server
   become: yes
-
   tasks:
     - name: Atualizar cache do apt
-      apt:
+      ansible.builtin.apt:
         update_cache: yes
 
     - name: Instalar dependências
-      apt:
+      ansible.builtin.apt:
         name:
           - curl
           - stress-ng
         state: present
 
     - name: Instalar Netdata
-      shell: |
+      ansible.builtin.shell: |
         bash <(curl -Ss https://get.netdata.cloud/kickstart.sh) --non-interactive
       args:
         executable: /bin/bash
+        creates: /usr/sbin/netdata
+
+    - name: Garantir diretório de alertas
+      ansible.builtin.file:
+        path: /etc/netdata/health.d
+        state: directory
+        owner: netdata
+        group: netdata
+        mode: "0755"
 
     - name: Garantir serviço iniciado
-      service:
+      ansible.builtin.service:
         name: netdata
         state: started
         enabled: yes
 
     - name: Criar alerta de CPU acima de 80%
-      copy:
+      ansible.builtin.copy:
         dest: /etc/netdata/health.d/cpu_overload.conf
         content: |
           alarm: cpu_overload
           on: system.cpu
-          lookup: average -1m percentage of user
+          lookup: average -1m unaligned of user,system,softirq,irq,guest
+          units: %
           every: 10s
           warn: $this > 80
-          info: CPU acima de 80%
+          crit: $this > 95
+          info: CPU acima de 80% (media de 1 minuto)
           to: sysadmin
+        owner: netdata
+        group: netdata
+        mode: "0644"
+      notify: Reiniciar Netdata
 
+  handlers:
     - name: Reiniciar Netdata
-      service:
+      ansible.builtin.systemd:
         name: netdata
         state: restarted
+        enabled: yes

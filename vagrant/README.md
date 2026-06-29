@@ -93,7 +93,17 @@ vagrant ssh vm2
 
 ssh vagrant@192.168.22.4 # Caso tenha configurado uma ssh para acessar a vm2
 
+stress-ng --cpu 1 --cpu-method matrixprod --timeout 60s
+
+#ou 
+
+stress-ng --cpu 1 --timeout 60s
+
+# Caso prefira testes mais pesados coloque o --cpu 2 no lugar do --cpu 1
+
 stress-ng --cpu 2 --cpu-method matrixprod --timeout 60s
+
+stress-ng --cpu 2 --timeout 60s
 ```
 
 O Netdata detecta o uso acima de 80% em até 10 segundos e:
