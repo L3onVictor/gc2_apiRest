@@ -156,6 +156,9 @@ A resposta esperada é:
  
 ## Provisionamento com o Ansible
 ```sh
+# Caso já esteja na pasta onde está o vagrantfile, ignore, caso não:
+cd vagrant/
+
 # 1. Sobe as VMs
 vagrant up
 
